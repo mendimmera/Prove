@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forma e Kontaktit</title>
+</head>
+<body>
+
+    <h2>Forma e Kontaktit</h2>
+
+    <form id="contactForm">
+        <label for="name">Emri:</label>
+        <input type="text" id="name" name="name" required>
+        <br><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <br><br>
+        <input type="submit" value="Dërgo">
+    </form>
+
+    <script>
+        document.getElementById("contactForm").addEventListener("submit", function(event) {
+            event.preventDefault();  // Parandalon dërgimin e formës nga vetë formulari
+
+            var formData = new FormData(event.target);
+            var object = {};
+            formData.forEach((value, key) => { object[key] = value });
+
+            // Dërgon të dhënat si JSON
+            fetch("https://script.google.com/macros/s/AKfycbyfpbxZJ8AKahg2YqH-AoX77_wtIOx3mNujmME0nAK--1mUcDVJXy7ILxnX6Fk8V15p/exec", {  // Vendos URL-në e API-së këtu
+                method: "POST",
+                body: JSON.stringify(object),  // Dërgon të dhënat si JSON
+                headers: {
+                    "Content-Type": "application/json"  // Dërgon kërkesën si JSON
+                }
+            })
+            .then(response => response.text())  // Përdor text() në vend të json() për këtë rast
+            .then(data => {
+                alert("Përgjigja është dërguar me sukses!");
+            })
+            .catch(error => {
+                alert("Ndodhi një gabim: " + error);
+            });
+        });
+    </script>
+
+</body>
+</html>
